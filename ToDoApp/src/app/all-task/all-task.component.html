@@ -1,0 +1,95 @@
+<html style="display:inline;">
+  <head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Trirong">
+</head>
+
+<mat-toolbar style="background-color: #9400FF;">
+  <mat-toolbar-row>
+  <button mat-icon-button  (click)="sidenav.toggle();" appearance="legacy"><mat-icon >vertical_split</mat-icon></button>
+  
+
+      <mat-form-field style="height: 70px; margin-top: 20px;padding-left: 50px;">
+        <mat-label>Filter by category</mat-label>
+        <mat-select required placeholder="Filter by Task" name="favoriteColor" [(ngModel)]="searchInput" #category="ngModel">
+          <mat-option value="" (click)="onfilter()">All</mat-option>
+          <mat-option value="Work" (click)="onfilter()">Work</mat-option>
+          <mat-option value="Home" (click)="onfilter()">Home</mat-option>
+          <mat-option value="Shopping" (click)="onfilter()">Shopping</mat-option>
+          <mat-option value="Music" (click)="onfilter()">Music</mat-option>
+          <mat-option value="Food" (click)="onfilter()">Food</mat-option>
+          <mat-option value="Others" (click)="onfilter()">Others</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    <div id="searchcomp">
+      <app-search (searchTextChanged)="onSearchTextChanged($event)"></app-search>
+    </div>
+
+    <button mat-raised-button style="background-color: #27005D ; border-radius: 20%;" matTooltip="Add Task" (click)="onClickFunction()" style="color:#9400FF; cursor: pointer;">add</button>
+    <button (click)="logoutf()" matTooltip="Logout" id="logout"><mat-icon>logout</mat-icon></button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-sidenav-container>
+<mat-sidenav  #sidenav opened="true" mode="side" style="background-color: #E4F1FF;">
+<mat-nav-list >
+  <a mat-list-item  routerLink="main" matTooltip="HOME" id="hov"><mat-icon id="iclass">home</mat-icon></a>
+  <a mat-list-item  routerLink="high" matTooltip="PRIORITIZE"><mat-icon id="iclass">priority_high</mat-icon></a>
+  <a mat-list-item  routerLink="today" matTooltip="TODAYS TASK"><mat-icon id="iclass">today</mat-icon></a>
+  <a mat-list-item routerLink="archive"matTooltip="YOUR ARCHIVES" ><mat-icon id="iclass">archive</mat-icon></a>
+</mat-nav-list>
+</mat-sidenav>
+<mat-sidenav-content>
+
+  
+  <div s>
+    <body style="background-color: #AED2FF;">
+      <!--Generate Cards Dynamically -->
+      <div style="display: flex;flex-wrap: wrap; z-index:8;text-align:center;">
+        <mat-card *ngFor="let value of filteredNotes" style="background-color:white;width: 350px ;box-shadow:2px solid black; border-radius: 10px;">
+            <mat-card-header style="height:40px;text-align:center;font-size:x-large;font-family:Trirong,serif;text-transform: capitalize;">{{value.taskName}}</mat-card-header>
+            <div style="display: flex;">
+            <button mat-stroked-button color="primary" style="font-size: small; width:fit-content;">Status:{{value.status}}</button>
+            <button mat-raised-button color="disabled" style="width: fit-content;margin-left:30px;"><mat-icon style="color:chocolate;">notification_important</mat-icon>Priority:{{value.priority}}</button>
+            </div>
+           
+            <mat-card-content class="raised" style="font-family:monospace;font-weight: bold;font-size: large; margin: 10px;">category:{{value.category}}</mat-card-content>
+            <!-- <mat-card-content class="raised" style="text-decoration: underline;text-align:justify;font-size: medium;color: black;margin-top: 20px;"><button mat-flat-button style="color:rgb(0, 83, 128);">Description:</button>{{value.taskDesc}}</mat-card-content> -->
+            <mat-expansion-panel  style="margin-top: 10px;" hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title style="text-align:justify;font-size: medium;color:rgb(0, 83, 128);margin-right:10px;">
+                 Description
+                </mat-panel-title>
+                <mat-panel-description>
+                  Click to view in Detail
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <p>{{value.taskDesc}}</p>
+            </mat-expansion-panel>
+      
+            <mat-card-footer style="margin-bottom:10px;">
+            
+            </mat-card-footer>
+        <mat-card-footer>
+            <button mat-raised-button color="primary" id="datebut"><mat-icon>calendar_today</mat-icon>Due:
+                {{value.dueDate | date}}</button>
+          <a routerLink="{{value.taskId}}">
+                <button mat-raised-button color="accent" style="margin-left:7px;background-color:white" matTooltip="EDIT THIS" appearance="legacy" >
+                  <mat-icon style="color: rgb(14, 109, 76);">edit</mat-icon>
+                </button>
+          </a>
+          <button mat-raised-button color="accent" style="margin-left:7px;background-color:white"  (click)="setStatus(value.taskId)" matTooltip="ARCHIVE THIS" appearance="legacy">
+            
+            <mat-icon style="color:palevioletred">archive</mat-icon>
+          </button>
+          
+        </mat-card-footer>
+        </mat-card>
+        </div>
+    </body>
+  </div>
+</mat-sidenav-content>
+</mat-sidenav-container>
+
+    <!--filter bar ends  -->
+  </html>
